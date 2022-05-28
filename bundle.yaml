@@ -1,0 +1,51 @@
+schema: draft-07
+name: aws-vpc
+description: AWS VPC includes best-practice AWS reference architecture for VPCs and subnets.
+ref: github.com/massdriver-cloud/aws-vpc
+access: public
+type: bundle
+
+steps:
+  - path: src
+    provisioner: terraform
+
+params:
+  examples:
+    - __name: Small Network (4K IPs)
+      cidr: "10.0.0.0/20"
+    - __name: Large Network (65K IPs)
+      cidr: "10.0.0.0/16"
+  required:
+    - aws_region
+    - cidr
+  properties:
+    aws_region:
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-region.json
+    cidr:
+      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/cidr.json
+    enable_flow_logs:
+      type: boolean
+      title: Enable VPC Flow Logs
+      description: Enable sending VPC traffic logs to Cloudwatch logs for auditing.
+      default: true
+
+connections:
+  required:
+    - aws_authentication
+  properties:
+    aws_authentication:
+      $ref: massdriver/aws-iam-role
+
+artifacts:
+  required:
+    - vpc
+  properties:
+    vpc:
+      $ref: massdriver/aws-vpc
+
+ui:
+  ui:order:
+    - aws_region
+    - cidr
+    - enable_flow_logs
+    - "*"
