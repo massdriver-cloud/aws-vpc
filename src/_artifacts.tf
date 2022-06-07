@@ -40,9 +40,6 @@ resource "massdriver_artifact" "vpc" {
           public_subnets   = local.public_subnets
           internal_subnets = local.internal_subnets
         }
-        observability = {
-          alarm_sns_topic_arn = aws_sns_topic.cloudwatch_alarms.arn
-        }
       }
       specs = {
         aws = {
