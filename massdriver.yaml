@@ -23,6 +23,11 @@ params:
       $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-region.json
     cidr:
       $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/cidr.json
+    high_availability:
+      type: boolean
+      title: NAT Gateway High Availability
+      description: Provision NAT Gateways in all availability zones so private subnets stay up in the event of a zonal failure
+      default: true
     enable_flow_logs:
       type: boolean
       title: Enable VPC Flow Logs
@@ -47,5 +52,6 @@ ui:
   ui:order:
     - aws_region
     - cidr
+    - high_availability
     - enable_flow_logs
     - "*"

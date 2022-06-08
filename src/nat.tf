@@ -1,5 +1,5 @@
 resource "aws_eip" "nat" {
-  for_each = module.private_subnets_cidr.network_cidr_blocks
+  for_each = local.nat_cidr_blocks
 
   vpc = true
 
@@ -10,7 +10,7 @@ resource "aws_eip" "nat" {
 
 # NAT gateways for use by the private subnets, but existing in the public subnets
 resource "aws_nat_gateway" "private" {
-  for_each = module.private_subnets_cidr.network_cidr_blocks
+  for_each = local.nat_cidr_blocks
 
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = aws_subnet.public[each.key].id
