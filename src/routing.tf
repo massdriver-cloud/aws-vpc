@@ -11,7 +11,7 @@ resource "aws_default_route_table" "vpc" {
 
 # route tables for individual subnets, they use their own NAT gateways
 resource "aws_route_table" "private" {
-  for_each = module.private_subnets_cidr.network_cidr_blocks
+  for_each = local.nat_cidr_blocks
 
   vpc_id = aws_vpc.main.id
 
@@ -21,7 +21,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private_nat_gateway" {
-  for_each = module.private_subnets_cidr.network_cidr_blocks
+  for_each = local.nat_cidr_blocks
 
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
@@ -32,7 +32,7 @@ resource "aws_route_table_association" "private" {
   for_each = module.private_subnets_cidr.network_cidr_blocks
 
   subnet_id      = aws_subnet.private[each.key].id
-  route_table_id = aws_route_table.private[each.key].id
+  route_table_id = var.high_availability ? aws_route_table.private[each.key].id : aws_route_table.private[local.single_nat_az].id
 }
 
 # public route table - just getting out to the Internet
