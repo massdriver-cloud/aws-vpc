@@ -11,10 +11,14 @@ steps:
 
 params:
   examples:
-    - __name: Small Network (4K IPs)
+    - __name: Small Development Network (4K IPs)
       cidr: "10.0.0.0/20"
-    - __name: Large Network (65K IPs)
+      high_availability: false
+      enable_flow_logs: false
+    - __name: Large Production Network (65K IPs)
       cidr: "10.0.0.0/16"
+      high_availability: true
+      enable_flow_logs: true
   required:
     - aws_region
     - cidr
