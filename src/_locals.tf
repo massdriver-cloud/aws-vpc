@@ -1,20 +1,20 @@
 locals {
   az_region_map = {
-    # "eu-central-1" = [
-    #   "eu-central-1a",
-    #   "eu-central-1b",
-    #   "eu-central-1c"
-    # ]
-    # "eu-west-1" = [
-    #   "eu-west-1a",
-    #   "eu-west-1b",
-    #   "eu-west-1c"
-    # ]
-    # "sa-east-1" = [
-    #   "sa-east-1a",
-    #   "sa-east-1b",
-    #   "sa-east-1c"
-    # ]
+    "eu-central-1" = [
+      "eu-central-1a",
+      "eu-central-1b",
+      "eu-central-1c"
+    ]
+    "eu-west-1" = [
+      "eu-west-1a",
+      "eu-west-1b",
+      "eu-west-1c"
+    ]
+    "sa-east-1" = [
+      "sa-east-1a",
+      "sa-east-1b",
+      "sa-east-1c"
+    ]
     "us-east-1" = [
       "us-east-1a",
       "us-east-1b",
@@ -71,6 +71,6 @@ locals {
   # down-select to a single private az to use in case we aren't doing high-availability
   # I'd prefer this to be a random AZ instead of the first one, but you can't do for_each
   # on a map that isn't determined until runtime, and the random provider violates that
-  single_nat_az = local.azs[0]
-  nat_cidr_blocks = var.high_availability ? module.private_subnets_cidr.network_cidr_blocks : { (local.single_nat_az) = module.private_subnets_cidr.network_cidr_blocks[local.single_nat_az]}
+  single_nat_az   = local.azs[0]
+  nat_cidr_blocks = var.high_availability ? module.private_subnets_cidr.network_cidr_blocks : { (local.single_nat_az) = module.private_subnets_cidr.network_cidr_blocks[local.single_nat_az] }
 }
