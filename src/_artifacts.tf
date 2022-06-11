@@ -24,7 +24,6 @@ locals {
   ]
 }
 
-
 resource "massdriver_artifact" "vpc" {
   field                = "vpc"
   provider_resource_id = aws_vpc.main.arn
