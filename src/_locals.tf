@@ -5,10 +5,25 @@ locals {
       "eu-central-1b",
       "eu-central-1c"
     ]
+    "eu-north-1" = [
+      "eu-north-1a",
+      "eu-north-1b",
+      "eu-north-1c"
+    ]
     "eu-west-1" = [
       "eu-west-1a",
       "eu-west-1b",
       "eu-west-1c"
+    ]
+    "eu-west-2" = [
+      "eu-west-2a",
+      "eu-west-2b",
+      "eu-west-2c"
+    ]
+    "eu-west-3" = [
+      "eu-west-3a",
+      "eu-west-3b",
+      "eu-west-3c"
     ]
     "sa-east-1" = [
       "sa-east-1a",
@@ -55,7 +70,7 @@ locals {
   }
 
   // Need to use a cache here to get the AZs
-  azs = local.az_region_map[var.aws_region]
+  azs = cache_store.azs.value
 
   public_cidr_range   = cidrsubnet(var.cidr, 2, 2)
   private_cidr_range  = cidrsubnet(var.cidr, 1, 0)
@@ -73,4 +88,9 @@ locals {
   # on a map that isn't determined until runtime, and the random provider violates that
   single_nat_az   = local.azs[0]
   nat_cidr_blocks = var.high_availability ? module.private_subnets_cidr.network_cidr_blocks : { (local.single_nat_az) = module.private_subnets_cidr.network_cidr_blocks[local.single_nat_az] }
+}
+
+# cache the AZs so if we pull them dynamically and they change (an AZ is added), we don't break the bundle
+resource "cache_store" "azs" {
+  value = local.az_region_map[var.aws_region]
 }
