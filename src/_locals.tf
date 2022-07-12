@@ -32,8 +32,3 @@ locals {
   single_nat_az   = local.azs[0]
   nat_cidr_blocks = var.high_availability ? module.private_subnets_cidr.network_cidr_blocks : { (local.single_nat_az) = module.private_subnets_cidr.network_cidr_blocks[local.single_nat_az] }
 }
-
-# cache the AZs so if we pull them dynamically and they change (an AZ is added), we don't break the bundle
-resource "cache_store" "azs" {
-  value = local.az_region_map[var.aws_region]
-}
