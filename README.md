@@ -2,35 +2,18 @@
 
 AWS Virtual Private Network
 
-## Development
-### Enabling Pre-commit
+## What Is A Bundle  
 
-This repo includes Terraform pre-commit hooks.
+Bundles are the basic building blocks of infrastructure, applications, and architectures in Massdriver. They are composed of Terraform modules or Helm charts. Read more [here](https://docs.massdriver.cloud/concepts/bundles).
 
-[Install precommmit](https://pre-commit.com/index.html#installation) on your system.
+## Developing  
 
-```shell
-git init
-pre-commit install
-```
+### How To Develop A Bundle
 
-Terraform hooks will now be run on each commit.
+To learn how to develop a bundle for Massdriver, check out our [bundle docs](https://docs.massdriver.cloud/bundles/development).
 
-### GitHub Action for Publishing to Massdriver
+### Contribution guidelines
 
-A github workflow for publishing has been configured in `.github/workflows/publish.yaml`
-### Configuring a bundle
-
-`massdriver.yaml` TBD
-
-Build the bundle locally:
-
-```shell
-mass bundle build
-```
-
-### Misc
-
-#### Other files
-* `operator.mdx` TBD
-* `schema.stories.json` TBD
+So you're interested in contributing to Massdriver Bundles?  Please refer to Massdriver's overall
+[contribution guidelines](https://docs.massdriver.cloud/bundles/contributing) to find out how you
+can help with existing bundles or open source your own bundle.
