@@ -31,11 +31,11 @@ For detailed information, check out our [Operator Guide](operator.mdx) for this 
 
 ## Usage
 
-Our bundles aren't intended to be used locally, outside of testing. Instead, our bundles are designed to be configured, connected, deployed and monitored in the [Massdriver](https://www.massdriver.cloud/) platform.
+Our bundles aren't intended to be used locally, outside of testing. Instead, our bundles are designed to be configured, connected, deployed and monitored in the [Massdriver][website] platform.
 
 ### What are Bundles?
 
-Bundles are the basic building blocks of infrastructure, applications, and architectures in [Massdriver](https://www.massdriver.cloud/). Read more [here](https://docs.massdriver.cloud/concepts/bundles).
+Bundles are the basic building blocks of infrastructure, applications, and architectures in [Massdriver][website]. Read more [here](https://docs.massdriver.cloud/concepts/bundles).
 
 ## Security & Compliance
 
@@ -91,7 +91,7 @@ Security and compliance scanning of our bundles is performed using [Bridgecrew](
 
 ### Bug Reports & Feature Requests
 
-Did we miss something? Please [submit an issue](https://github.com/aws-vpc/issues) to report any bugs or request additional features.
+Did we miss something? Please [submit an issue](https://github.com/massdriver-cloud/aws-vpc/issues) to report any bugs or request additional features.
 
 ### Developing
 
