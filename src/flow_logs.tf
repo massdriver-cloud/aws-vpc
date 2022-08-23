@@ -6,6 +6,9 @@ locals {
   enable_cloudwatch_flow_log   = var.enable_flow_logs && local.flow_log_destination_type != "s3"
   cloudwatch_flow_log_for_each = local.enable_cloudwatch_flow_log ? toset([var.md_metadata.name_prefix]) : toset([])
   cloudwatch_flow_log_name     = "${var.md_metadata.name_prefix}-flow-log"
+  cloudwatch_flow_log_arn      = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:${local.cloudwatch_flow_log_name}"
+
+  kms_key_arn_prefix = "arn:aws:kms:${var.aws_region}:${data.aws_caller_identity.current.account_id}:key/*"
 }
 
 ################################################################################
@@ -41,7 +44,7 @@ data "aws_iam_policy_document" "flow_log_encryption_key_policy" {
     }
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = ["*"]
+    resources = [local.kms_key_arn_prefix]
   }
 
   statement {
@@ -58,19 +61,21 @@ data "aws_iam_policy_document" "flow_log_encryption_key_policy" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ]
-    resources = ["*"]
+    resources = [local.kms_key_arn_prefix]
     condition {
       test     = "ArnEquals"
       variable = "kms:EncryptionContext:aws:logs:arn"
-      values   = ["arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:${local.cloudwatch_flow_log_name}"]
+      values   = [local.cloudwatch_flow_log_arn]
     }
   }
 }
 
 resource "aws_kms_key" "flow_log_encryption_key" {
-  for_each    = local.cloudwatch_flow_log_for_each
-  description = "${var.md_metadata.name_prefix}-flow-log encryption key"
-  policy      = data.aws_iam_policy_document.flow_log_encryption_key_policy[each.key].json
+  for_each            = local.cloudwatch_flow_log_for_each
+  description         = "${var.md_metadata.name_prefix}-flow-log encryption key"
+  policy              = data.aws_iam_policy_document.flow_log_encryption_key_policy[each.key].json
+  enable_key_rotation = true
+  tags                = var.md_metadata.default_tags
 }
 
 resource "aws_kms_alias" "flow_log_encryption_key" {
@@ -84,12 +89,14 @@ resource "aws_cloudwatch_log_group" "flow_log" {
   name              = local.cloudwatch_flow_log_name
   retention_in_days = 30
   kms_key_id        = aws_kms_key.flow_log_encryption_key[each.key].arn
+  tags              = var.md_metadata.default_tags
 }
 
 resource "aws_iam_role" "vpc_flow_log_cloudwatch" {
   for_each           = local.cloudwatch_flow_log_for_each
   name               = "${var.md_metadata.name_prefix}-flow-log"
   assume_role_policy = data.aws_iam_policy_document.flow_log_cloudwatch_assume_role[each.key].json
+  tags               = var.md_metadata.default_tags
 }
 
 data "aws_iam_policy_document" "flow_log_cloudwatch_assume_role" {
@@ -128,9 +135,13 @@ data "aws_iam_policy_document" "vpc_flow_log_cloudwatch" {
       "logs:CreateLogStream",
       "logs:PutLogEvents",
       "logs:DescribeLogGroups",
+      "logs:PutRetentionPolicy",
       "logs:DescribeLogStreams",
     ]
 
-    resources = ["*"]
+    resources = [
+      local.cloudwatch_flow_log_arn,
+      "${local.cloudwatch_flow_log_arn}:log-stream:*",
+    ]
   }
 }
