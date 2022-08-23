@@ -63,10 +63,9 @@ resource "aws_subnet" "internal" {
 resource "aws_subnet" "public" {
   for_each = module.public_subnets_cidr.network_cidr_blocks
 
-  vpc_id                  = aws_vpc.main.id
-  availability_zone       = each.key
-  cidr_block              = each.value
-  map_public_ip_on_launch = true
+  vpc_id            = aws_vpc.main.id
+  availability_zone = each.key
+  cidr_block        = each.value
 
   tags = {
     Name                     = "${var.md_metadata.name_prefix}-public-${each.key}"

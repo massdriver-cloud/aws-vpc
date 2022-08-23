@@ -94,7 +94,7 @@ Connections from other bundles that this bundle depends on.
 ## Properties
 
 - **`aws_authentication`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*
+  - **`data`** *(object)*: Cannot contain additional properties.
     - **`arn`** *(string)*: Amazon Resource Name.
 
       Examples:
@@ -107,8 +107,8 @@ Connections from other bundles that this bundle depends on.
       ```
 
     - **`external_id`** *(string)*: An external ID is a piece of data that can be passed to the AssumeRole API of the Security Token Service (STS). You can then use the external ID in the condition element in a role's trust policy, allowing the role to be assumed only when a certain value is present in the external ID.
-  - **`specs`** *(object)*
-    - **`aws`** *(object)*: .
+  - **`specs`** *(object)*: Cannot contain additional properties.
+    - **`aws`** *(object)*: . Cannot contain additional properties.
       - **`region`** *(string)*: AWS Region to provision in.
 
         Examples:
@@ -136,8 +136,8 @@ Resources created by this bundle that can be connected to other bundles.
 ## Properties
 
 - **`vpc`** *(object)*: . Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`infrastructure`** *(object)*
+  - **`data`** *(object)*: Cannot contain additional properties.
+    - **`infrastructure`** *(object)*: Cannot contain additional properties.
       - **`arn`** *(string)*: Amazon Resource Name.
 
         Examples:
@@ -161,7 +161,7 @@ Resources created by this bundle that can be connected to other bundles.
         ```
 
       - **`internal_subnets`** *(array)*
-        - **Items** *(object)*: AWS VCP Subnet.
+        - **Items** *(object)*: AWS VCP Subnet. Cannot contain additional properties.
           - **`arn`** *(string)*: Amazon Resource Name.
 
             Examples:
@@ -190,7 +190,7 @@ Resources created by this bundle that can be connected to other bundles.
 
           Examples:
       - **`private_subnets`** *(array)*
-        - **Items** *(object)*: AWS VCP Subnet.
+        - **Items** *(object)*: AWS VCP Subnet. Cannot contain additional properties.
           - **`arn`** *(string)*: Amazon Resource Name.
 
             Examples:
@@ -219,7 +219,7 @@ Resources created by this bundle that can be connected to other bundles.
 
           Examples:
       - **`public_subnets`** *(array)*
-        - **Items** *(object)*: AWS VCP Subnet.
+        - **Items** *(object)*: AWS VCP Subnet. Cannot contain additional properties.
           - **`arn`** *(string)*: Amazon Resource Name.
 
             Examples:
@@ -247,8 +247,8 @@ Resources created by this bundle that can be connected to other bundles.
 
 
           Examples:
-  - **`specs`** *(object)*
-    - **`aws`** *(object)*: .
+  - **`specs`** *(object)*: Cannot contain additional properties.
+    - **`aws`** *(object)*: . Cannot contain additional properties.
       - **`region`** *(string)*: AWS Region to provision in.
 
         Examples:

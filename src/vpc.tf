@@ -6,3 +6,7 @@ resource "aws_vpc" "main" {
     Name = var.md_metadata.name_prefix
   }
 }
+
+resource "aws_default_security_group" "main" {
+  vpc_id = aws_vpc.main.id
+}
