@@ -139,6 +139,7 @@ Please connect with us!
 [![LinkedIn][linkedin_shield]][linkedin_url]
 [![Twitter][twitter_shield]][twitter_url]
 [![YouTube][youtube_shield]][youtube_url]
+[![Reddit][reddit_shield]][reddit_url]
 
 <!-- markdownlint-disable -->
 
