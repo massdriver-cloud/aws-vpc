@@ -63,9 +63,16 @@ Form input parameters for configuring a bundle for deployment.
   "us-west-2"
   ```
 
-- **`cidr`** *(string)*: Enter a CIDR range to use for the size of your VPC.
+- **`cidr`** *(object)*
+  - **`automatic`** *(boolean)*: Automatically select CIDR range that doesn't conflict with other VPCs.
 - **`enable_flow_logs`** *(boolean)*: Enable sending VPC traffic logs to Cloudwatch logs for auditing. Default: `True`.
 - **`high_availability`** *(boolean)*: Provision NAT Gateways in all availability zones so private subnets stay up in the event of a zonal failure. Default: `True`.
+- **`monitoring`** *(object)*
+  - **`mode`** *(string)*: Enable and customize CloudWatch metric alarms. Default: `AUTOMATED`.
+    - **One of**
+      - Automated
+      - Custom
+      - Disabled
 ## Examples
 
   ```json
@@ -123,11 +130,6 @@ Connections from other bundles that this bundle depends on.
         "us-west-2"
         ```
 
-      - **`resource`** *(string)*
-      - **`service`** *(string)*
-      - **`zone`** *(string)*: AWS Availability Zone.
-
-        Examples:
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -263,11 +265,6 @@ Resources created by this bundle that can be connected to other bundles.
         "us-west-2"
         ```
 
-      - **`resource`** *(string)*
-      - **`service`** *(string)*
-      - **`zone`** *(string)*: AWS Availability Zone.
-
-        Examples:
 <!-- ARTIFACTS:END -->
 
 </details>

@@ -15,10 +15,10 @@ locals {
   // Need to use a cache here to get the AZs
   azs = cache_store.azs.value
 
-  public_cidr_range   = cidrsubnet(var.cidr, 2, 2)
-  private_cidr_range  = cidrsubnet(var.cidr, 1, 0)
-  internal_cidr_range = cidrsubnet(var.cidr, 3, 6)
-  spare_cidr_range    = cidrsubnet(var.cidr, 3, 7)
+  public_cidr_range   = cidrsubnet(local.vpc_cidr, 2, 2)
+  private_cidr_range  = cidrsubnet(local.vpc_cidr, 1, 0)
+  internal_cidr_range = cidrsubnet(local.vpc_cidr, 3, 6)
+  spare_cidr_range    = cidrsubnet(local.vpc_cidr, 3, 7)
 
   # hardcoding variables for this here. Down the road we may want to determine based on inputs
   create_public   = true

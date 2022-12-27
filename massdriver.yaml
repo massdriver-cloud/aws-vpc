@@ -28,12 +28,53 @@ params:
       $md.immutable: true
     cidr:
       title: VPC CIDR
-      type: string
-      description: Enter a CIDR range to use for the size of your VPC
-      $md.immutable: true
-      pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}(?:/(?:1[6-9]|20))$
-      message:
-        pattern: Range must be from private networking space (10.X.X.X, 172.16-31.X.X, 192.168.X.X). Mask must be between 16 and 20
+      type: object
+      properties:
+        automatic:
+          title: Automatically Select CIDR
+          description: Automatically select CIDR range that doesn't conflict with other VPCs
+          type: boolean
+          $md.immutable: true
+      dependencies:
+        automatic:
+          oneOf:
+            - properties:
+                automatic:
+                  const: true
+                mask:
+                  title: VPC Size
+                  type: integer
+                  description: Select the size of the VPC in IP addresses
+                  $md.immutable: true
+                  default: 16
+                  oneOf:
+                    - const: 16
+                      title: 65k IP Addresses
+                    - const: 17
+                      title: 32k IP Addresses
+                    - const: 18
+                      title: 16k IP Addresses
+                    - const: 19
+                      title: 8k IP Addresses
+                    - const: 20
+                      title: 4k IP Addresses
+              required:
+                - automatic
+                - mask
+            - properties:
+                automatic:
+                  const: false
+                cidr:
+                  title: CIDR Range
+                  type: string
+                  description: Enter a CIDR range to use for the size of your VPC
+                  $md.immutable: true
+                  pattern: ^(?:10\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])|172\.(?:1[6-9]|2[0-9]|3[0-1])|192\.168)(?:\.(?:[0-9]|[0-9]{2}|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){2}(?:/(?:1[6-9]|20))$
+                  message:
+                    pattern: Range must be from private networking space (10.X.X.X, 172.16-31.X.X, 192.168.X.X). Mask must be between 16 and 20
+              required:
+                - automatic
+                - cidr
     high_availability:
       type: boolean
       title: NAT Gateway High Availability
@@ -44,6 +85,76 @@ params:
       title: Enable VPC Flow Logs
       description: Enable sending VPC traffic logs to Cloudwatch logs for auditing.
       default: true
+    monitoring:
+      type: object
+      title: Monitoring
+      properties:
+        mode:
+          title: Alarm Mode
+          description: Enable and customize CloudWatch metric alarms.
+          type: string
+          default: AUTOMATED
+          oneOf:
+            - const: AUTOMATED
+              title: Automated
+            - const: CUSTOM
+              title: Custom
+            - const: DISABLED
+              title: Disabled
+      dependencies:
+        mode:
+          oneOf:
+            - properties:
+                mode:
+                  const: AUTOMATED
+            - properties:
+                mode:
+                  const: DISABLED
+            - properties:
+                mode:
+                  const: CUSTOM
+                alarms:
+                  type: object
+                  title: Alarms
+                  properties:
+                    ip_address_utilization:
+                      title: IP Address Utilization
+                      type: object
+                      required:
+                        - percent
+                      properties:
+                        percent:
+                          type: number
+                          title: Percent
+                          description: The percent of IP address usage in the VPC above which the alarm will trigger
+                          default: 90
+                          minimum: 0
+                          maximum: 100
+                    nat_gateway_dropped_packets:
+                      title: NAT Gateway Dropped Packets
+                      type: object
+                      required:
+                        - percent
+                      properties:
+                        percent:
+                          type: number
+                          title: Percent
+                          description: The percent of packets through a NAT gateway that are dropped above which the alarm will trigger
+                          default: 0.01
+                          minimum: 0
+                          maximum: 100
+                    nat_gateway_port_allocation:
+                      title: NAT Gateway Port Allocation Errors
+                      type: object
+                      required:
+                        - count
+                      properties:
+                        count:
+                          type: integer
+                          title: Count
+                          description: The threshold of port allocation errors above which the alarm will trigger
+                          default: 1
+                          minimum: 1
 
 connections:
   required:
@@ -65,6 +176,7 @@ ui:
     - cidr
     - high_availability
     - enable_flow_logs
+    - monitoring
     - "*"
   aws_region:
     ui:field: supportedCloudLocationsDropdown
