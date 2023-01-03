@@ -3,7 +3,7 @@ name: aws-vpc
 description: AWS VPC includes best-practice AWS reference architecture for VPCs and subnets.
 source_url: github.com/massdriver-cloud/aws-vpc
 access: public
-type: bundle
+type: infrastructure
 
 steps:
   - path: src
