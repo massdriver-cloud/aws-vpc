@@ -27,13 +27,13 @@ locals {
 }
 
 module "alarm_channel" {
-  source      = "github.com/massdriver-cloud/terraform-modules//aws-alarm-channel?ref=9aab9df"
+  source      = "github.com/massdriver-cloud/terraform-modules//aws/alarm-channel?ref=f3163aa"
   md_metadata = var.md_metadata
 }
 
 module "ip_address_utilization" {
   count         = lookup(local.alarms, "ip_address_utilization", null) == null ? 0 : 1
-  source        = "github.com/massdriver-cloud/terraform-modules//aws-cloudwatch-alarm?ref=9aab9df"
+  source        = "github.com/massdriver-cloud/terraform-modules//aws/cloudwatch-alarm?ref=f3163aa"
   sns_topic_arn = module.alarm_channel.arn
   display_name  = "IP Address Availability"
   depends_on = [
@@ -57,8 +57,7 @@ module "ip_address_utilization" {
 }
 
 module "nat_gateway_dropped_packets" {
-  //source        = "github.com/massdriver-cloud/terraform-modules//aws/aws-cloudwatch-alarm-expression?ref=9aab9df"
-  source        = "/home/cghill/src/massdriver/terraform-modules/aws/aws-cloudwatch-alarm-expression"
+  source        = "github.com/massdriver-cloud/terraform-modules//aws/cloudwatch-alarm-expression?ref=f3163aa"
   for_each      = lookup(local.alarms, "nat_gateway_dropped_packets", null) == null ? {} : local.nat_cidr_blocks
   sns_topic_arn = module.alarm_channel.arn
   display_name  = "NAT Gateway Dropped Packets"
@@ -138,8 +137,7 @@ module "nat_gateway_dropped_packets" {
 }
 
 module "nat_gateway_port_allocation" {
-  //source        = "github.com/massdriver-cloud/terraform-modules//aws/aws-cloudwatch-alarm-expression?ref=9aab9df"
-  source        = "github.com/massdriver-cloud/terraform-modules//aws-cloudwatch-alarm?ref=9aab9df"
+  source        = "github.com/massdriver-cloud/terraform-modules//aws/cloudwatch-alarm?ref=f3163aa"
   for_each      = lookup(local.alarms, "nat_gateway_port_allocation", null) == null ? {} : local.nat_cidr_blocks
   sns_topic_arn = module.alarm_channel.arn
   display_name  = "NAT Gateway Port Allocation"
