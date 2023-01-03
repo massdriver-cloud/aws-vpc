@@ -12,11 +12,15 @@ steps:
 params:
   examples:
     - __name: Small Development Network (4K IPs)
-      cidr: "10.0.0.0/20"
+      cidr:
+        automatic: true
+        mask: 20
       high_availability: false
       enable_flow_logs: false
     - __name: Large Production Network (65K IPs)
-      cidr: "10.0.0.0/16"
+      cidr:
+        automatic: true
+        mask: 16
       high_availability: true
       enable_flow_logs: true
   required:
@@ -34,6 +38,7 @@ params:
           title: Automatically Select CIDR
           description: Automatically select CIDR range that doesn't conflict with other VPCs
           type: boolean
+          default: true
           $md.immutable: true
       dependencies:
         automatic:
