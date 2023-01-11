@@ -72,7 +72,7 @@ Form input parameters for configuring a bundle for deployment.
       - Custom
       - Disabled
 - **`network`** *(object)*
-  - **`automatic`** *(boolean)*: Automatically select CIDR range that doesn't conflict with other VPCs. Default: `True`.
+  - **`automatic`** *(boolean)*: Automatically select CIDR range that doesn't conflict with other VPCs in the region. Default: `True`.
 ## Examples
 
   ```json

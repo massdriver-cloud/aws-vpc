@@ -36,7 +36,7 @@ params:
       properties:
         automatic:
           title: Automatically Select CIDR
-          description: Automatically select CIDR range that doesn't conflict with other VPCs
+          description: Automatically select CIDR range that doesn't conflict with other VPCs in the region
           type: boolean
           default: true
           $md.immutable: true
