@@ -2,16 +2,12 @@ locals {
   // iterate accross the subnets summing the size of each subnet (subtracting 5 from each since 5 IPs are reserved per subnet)
   max_vpc_ip_addresses = sum([for subnet in [local.public_cidr_range, local.private_cidr_range, local.internal_cidr_range] : pow(2, 32 - tonumber(split("/", subnet)[1])) - (5 * length(cache_store.azs.value))])
 
-  automated_ip_address_percent_threshold                  = 90
-  automated_nat_gateway_dropped_packets_percent_threshold = 0.01
-  automated_nat_gateway_port_allocation_threshold         = 1
+  automated_ip_address_percent_threshold          = 90
+  automated_nat_gateway_port_allocation_threshold = 1
 
   automated_alarms = {
     ip_address_utilization = {
       percent = local.automated_ip_address_percent_threshold
-    }
-    nat_gateway_dropped_packets = {
-      percent = local.automated_nat_gateway_dropped_packets_percent_threshold
     }
     nat_gateway_port_allocation = {
       count = local.automated_nat_gateway_port_allocation_threshold
@@ -53,86 +49,6 @@ module "ip_address_utilization" {
 
   dimensions = {
     "Per-VPC Metrics" = aws_vpc.main.id
-  }
-}
-
-module "nat_gateway_dropped_packets" {
-  source        = "github.com/massdriver-cloud/terraform-modules//aws/cloudwatch-alarm-expression?ref=bafd9d9"
-  for_each      = lookup(local.alarms, "nat_gateway_dropped_packets", null) == null ? {} : local.nat_cidr_blocks
-  sns_topic_arn = module.alarm_channel.arn
-  display_name  = "NAT Gateway Dropped Packets"
-  depends_on = [
-    aws_nat_gateway.private
-  ]
-
-  md_metadata         = var.md_metadata
-  message             = "AWS NAT Gateway ${aws_nat_gateway.private[each.key].id}: Percent Dropped Packets > ${local.alarms.nat_gateway_dropped_packets.percent}%"
-  alarm_name          = "${aws_nat_gateway.private[each.key].id}-highDroppedPacketCount"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  threshold           = local.alarms.nat_gateway_dropped_packets.percent
-
-  metric_queries = {
-    "percent_dropped_packets" = {
-      expression  = "dropped_packets/(packets_in_from_dest+packets_in_from_source+packets_out_to_dest+packets_out_to_source+1)*100"
-      label       = "Percent Dropped Packets"
-      return_data = "true"
-    },
-    "dropped_packets" = {
-      metric = {
-        metric_name = "PacketsDropCount"
-        namespace   = "AWS/NATGateway"
-        period      = "300"
-        stat        = "Sum"
-        dimensions = {
-          "NatGatewayId" = aws_nat_gateway.private[each.key].id
-        }
-      }
-    }
-    "packets_in_from_dest" = {
-      metric = {
-        metric_name = "PacketsInFromDestination"
-        namespace   = "AWS/NATGateway"
-        period      = "300"
-        stat        = "Sum"
-        dimensions = {
-          "NatGatewayId" = aws_nat_gateway.private[each.key].id
-        }
-      }
-    },
-    "packets_in_from_source" = {
-      metric = {
-        metric_name = "PacketsInFromSource"
-        namespace   = "AWS/NATGateway"
-        period      = "300"
-        stat        = "Sum"
-        dimensions = {
-          "NatGatewayId" = aws_nat_gateway.private[each.key].id
-        }
-      }
-    },
-    "packets_out_to_dest" = {
-      metric = {
-        metric_name = "PacketsOutToDestination"
-        namespace   = "AWS/NATGateway"
-        period      = "300"
-        stat        = "Sum"
-        dimensions = {
-          "NatGatewayId" = aws_nat_gateway.private[each.key].id
-        }
-      }
-    },
-    "packets_out_to_source" = {
-      metric = {
-        metric_name = "PacketsOutToSource"
-        namespace   = "AWS/NATGateway"
-        period      = "300"
-        stat        = "Sum"
-        dimensions = {
-          "NatGatewayId" = aws_nat_gateway.private[each.key].id
-        }
-      }
-    }
   }
 }
 

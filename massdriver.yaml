@@ -12,26 +12,26 @@ steps:
 params:
   examples:
     - __name: Small Development Network (4K IPs)
-      cidr:
+      network:
         automatic: true
         mask: 20
       high_availability: false
       enable_flow_logs: false
     - __name: Large Production Network (65K IPs)
-      cidr:
+      network:
         automatic: true
         mask: 16
       high_availability: true
       enable_flow_logs: true
   required:
     - aws_region
-    - cidr
+    - network
   properties:
     aws_region:
       $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-region.json
       $md.immutable: true
-    cidr:
-      title: VPC CIDR
+    network:
+      title: Network Configuration
       type: object
       properties:
         automatic:
@@ -135,19 +135,6 @@ params:
                           default: 90
                           minimum: 0
                           maximum: 100
-                    nat_gateway_dropped_packets:
-                      title: NAT Gateway Dropped Packets
-                      type: object
-                      required:
-                        - percent
-                      properties:
-                        percent:
-                          type: number
-                          title: Percent
-                          description: The percent of packets through a NAT gateway that are dropped above which the alarm will trigger
-                          default: 0.01
-                          minimum: 0
-                          maximum: 100
                     nat_gateway_port_allocation:
                       title: NAT Gateway Port Allocation Errors
                       type: object
@@ -178,7 +165,7 @@ artifacts:
 ui:
   ui:order:
     - aws_region
-    - cidr
+    - network
     - high_availability
     - enable_flow_logs
     - monitoring

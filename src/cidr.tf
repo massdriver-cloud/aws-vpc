@@ -20,14 +20,14 @@ locals {
     [for vpc in data.aws_vpc.eu-west-3 : vpc.cidr_block],
   ])
 
-  vpc_cidr = var.cidr.automatic ? utility_available_cidr.vpc.0.result : var.cidr.cidr
+  vpc_cidr = var.network.automatic ? utility_available_cidr.vpc.0.result : var.network.cidr
 }
 
 resource "utility_available_cidr" "vpc" {
-  count      = var.cidr.automatic ? 1 : 0
+  count      = var.network.automatic ? 1 : 0
   from_cidrs = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   used_cidrs = local.vpc_cidrs
-  mask       = var.cidr.mask
+  mask       = var.network.mask
 }
 
 
