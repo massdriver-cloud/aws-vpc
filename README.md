@@ -63,8 +63,6 @@ Form input parameters for configuring a bundle for deployment.
   "us-west-2"
   ```
 
-- **`cidr`** *(object)*
-  - **`automatic`** *(boolean)*: Automatically select CIDR range that doesn't conflict with other VPCs. Default: `True`.
 - **`enable_flow_logs`** *(boolean)*: Enable sending VPC traffic logs to Cloudwatch logs for auditing. Default: `True`.
 - **`high_availability`** *(boolean)*: Provision NAT Gateways in all availability zones so private subnets stay up in the event of a zonal failure. Default: `True`.
 - **`monitoring`** *(object)*
@@ -73,29 +71,31 @@ Form input parameters for configuring a bundle for deployment.
       - Automated
       - Custom
       - Disabled
+- **`network`** *(object)*
+  - **`automatic`** *(boolean)*: Automatically select CIDR range that doesn't conflict with other VPCs. Default: `True`.
 ## Examples
 
   ```json
   {
       "__name": "Small Development Network (4K IPs)",
-      "cidr": {
+      "enable_flow_logs": false,
+      "high_availability": false,
+      "network": {
           "automatic": true,
           "mask": 20
-      },
-      "enable_flow_logs": false,
-      "high_availability": false
+      }
   }
   ```
 
   ```json
   {
       "__name": "Large Production Network (65K IPs)",
-      "cidr": {
+      "enable_flow_logs": true,
+      "high_availability": true,
+      "network": {
           "automatic": true,
           "mask": 16
-      },
-      "enable_flow_logs": true,
-      "high_availability": true
+      }
   }
   ```
 
