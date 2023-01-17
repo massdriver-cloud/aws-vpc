@@ -75,7 +75,6 @@ resource "aws_kms_key" "flow_log_encryption_key" {
   description         = "${var.md_metadata.name_prefix}-flow-log encryption key"
   policy              = data.aws_iam_policy_document.flow_log_encryption_key_policy[each.key].json
   enable_key_rotation = true
-  tags                = var.md_metadata.default_tags
 }
 
 resource "aws_kms_alias" "flow_log_encryption_key" {
@@ -89,14 +88,12 @@ resource "aws_cloudwatch_log_group" "flow_log" {
   name              = local.cloudwatch_flow_log_name
   retention_in_days = 30
   kms_key_id        = aws_kms_key.flow_log_encryption_key[each.key].arn
-  tags              = var.md_metadata.default_tags
 }
 
 resource "aws_iam_role" "vpc_flow_log_cloudwatch" {
   for_each           = local.cloudwatch_flow_log_for_each
   name               = "${var.md_metadata.name_prefix}-flow-log"
   assume_role_policy = data.aws_iam_policy_document.flow_log_cloudwatch_assume_role[each.key].json
-  tags               = var.md_metadata.default_tags
 }
 
 data "aws_iam_policy_document" "flow_log_cloudwatch_assume_role" {
