@@ -1,3 +1,75 @@
-# Operator Guide
+# aws-vpc
 
-TBD
+AWS Virtual Private Cloud (VPC) is a virtual, private network in the cloud, providing you control over resource placement, connectivity and security. VPC offers internet connectivity, private networking NAT capabilities, other tools to build secure networks around the globe.
+
+## Use Cases
+### Securely Deploy AWS Managed Datastores
+Many AWS resources operate best (or exclusively) within a VPC, such as EC2, Elasticache, RDS, Kafka (MSK) and many others. If you intend to use any of these AWS services it’s best to deploy them into a VPC.
+### Multi-Region and Multi-Cloud
+With a VPC you can connect to private networks in other AWS regions or other public clouds.
+### Multi-Tier Applications
+Define network connectivity and restrictions between webservers, caches, and databases.
+### Hybrid Networking
+VPC enables a hybrid cloud environment, connecting on-premises resources to the AWS cloud in a secure and seamless manner.
+
+## Guided Configs
+
+### Small Development Network
+This is small network of ~4000 IP addresses intended for use in development or test environments. NAT Gateway High Availability and VPC Flow Logs are both disabled for cost savings.
+## Large Production Network
+The maximum size for an AWS VPC, offering ~65,000 IP address that should cover most production or high scale use cases. NAT Gateway High Availability and VPC Flow Logs are both enabled for resiliency and auditability of your production network.
+
+## Design
+This VPC is designed to match [AWS's recommended VPC configuration](https://docs.aws.amazon.com/quickstart/latest/vpc/architecture.html). This is the most flexible configuration and should cover almost all use cases. This configuration allocates:
+* ½ of the IP space to private subnets
+* ¼ of the IP space to public subnets
+* ⅛ of the IP space to internal subnets
+* ⅛ of the IP space reserved as spare capacity
+
+VPCs are composed of one or more subnets, which are allocations of IP addresses with the VPC. These subnets can have separate routing tables which determine what resources the subnet has access to. Some subnets may use a route table which gives access to the internet (via an [Internet Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)), which provides internet access into and out of the subnet. This is ideal for web based services, but it would be dangerous to host a database containing sensitive data in a subnet that is internet reachable. Instead you would host a private database in a subnet with very limited routing rules to restrict access.
+
+This bundle offers 3 classes of subnets:
+* public
+* private
+* internal
+
+### Public Subnets
+Public subnets allow internet traffic to flow into and out of the subnet. This subnet should only be used for resources that need to be directly reachable from the internet, such as load balancers.
+
+### Private Subnets
+Private subnets are not reachable from the internet, but allow services within the subnet to establish connections out to the internet. By restricting access from the internet, resources within this subnet are provided an additional layer of security. It is common to run webservers in private subnets with a load balancer running in a public subnet routing traffic to the webservers.
+
+### Internal Subnets
+Internal subnets have no access to or from the internet. This makes the subnet very secure, but limited in usability since services are unable to reach any internet resources, including software updates. This subnet is commonly used for strictly internal resources, such as databases (managed databases, such as AWS RDS, receive updates from AWS and thus do not need internet access to stay up to date).
+
+
+## Best Practices
+The following best practices are designed into this bundle:
+### AWS Reference Architecture
+Designed according to [AWS's recommended VPC configuration](https://docs.aws.amazon.com/quickstart/latest/vpc/architecture.html)
+### Network Segmentation
+Public, private and internal subnets are created to cover a range of use-cases while maintaining security
+### Availability Zone Spread
+Each subnet type within the VPC will be provisioned across at least 3 availability zones for high availability in the event of a data center outage
+### NAT Gateway High Availability
+If selected, NAT gateways will be created for each availability zone with independent route tables for each private subnet providing robust high availability
+### Spare Capacity
+A small range of addresses is left unallocated in case of future growth or changing requirements
+
+## Security
+### Network Segmentation
+Public, private and internal subnets are created in order to offer the most secure configuration for your use case
+### Flow Logs
+VPC Flow Logs are enabled by default to maintain an auditing trail of all network communication
+### Security Group Management
+IAM and Security Groups are built into each Massdriver bundle to ensure policy of least privilege is maintained
+
+### Auditing
+AWS VPC offers [Flow Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html) to capture and store information about network traffic within your VPC. Flow logs are sent to [CloudWatch Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html) for storage.
+
+## Observability
+Alarms are automatically created around failure boundaries
+### IP Address Availability
+When IP Address usage crosses 90% you will be notified
+### NAT Gateway Port Allocation Errors
+If one of the NAT Gateways has an error allocating a port for an external connection, you will be notified.
