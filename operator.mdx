@@ -33,15 +33,17 @@ This bundle offers 3 classes of subnets:
 * private
 * internal
 
-### Public Subnets
+#### Public Subnets
 Public subnets allow internet traffic to flow into and out of the subnet. This subnet should only be used for resources that need to be directly reachable from the internet, such as load balancers.
 
-### Private Subnets
+#### Private Subnets
 Private subnets are not reachable from the internet, but allow services within the subnet to establish connections out to the internet. By restricting access from the internet, resources within this subnet are provided an additional layer of security. It is common to run webservers in private subnets with a load balancer running in a public subnet routing traffic to the webservers.
 
-### Internal Subnets
+#### Internal Subnets
 Internal subnets have no access to or from the internet. This makes the subnet very secure, but limited in usability since services are unable to reach any internet resources, including software updates. This subnet is commonly used for strictly internal resources, such as databases (managed databases, such as AWS RDS, receive updates from AWS and thus do not need internet access to stay up to date).
 
+### Availability Zones
+AWS regions are separated into multiple [availability zones](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/), which are separate data-centers with redundant power, networking and connectivity. In the context of AWS VPC, subnets must be associated with only a single availability zone. It is a [best practice](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html) to use multiple availability zones to provide redundancy and fault-toleration for services running in the VPC in the event of an zonal outage. For this reason, this VPC bundle creates subnets in as many availability zones as the selected region supports, up to a maximum of 4 (currently only `us-east-1` has more than 4 regions).
 
 ## Best Practices
 The following best practices are designed into this bundle:
