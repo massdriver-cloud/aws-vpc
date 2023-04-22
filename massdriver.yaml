@@ -18,6 +18,8 @@ params:
         mask: 20
       high_availability: false
       enable_flow_logs: false
+      monitoring:
+        mode: AUTOMATIC
     - __name: Small Development Network (4K IPs)
       network:
         automatic: true
