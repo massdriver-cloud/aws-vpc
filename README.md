@@ -63,7 +63,7 @@ Form input parameters for configuring a bundle for deployment.
   "us-west-2"
   ```
 
-- **`enable_flow_logs`** *(boolean)*: Enable sending VPC traffic logs to Cloudwatch logs for auditing. Default: `True`.
+- **`enable_flow_logs`** *(boolean)*: Enable sending VPC traffic logs to Cloudwatch logs for auditing. Default: `False`.
 - **`high_availability`** *(boolean)*: Provision NAT Gateways in all availability zones so private subnets stay up in the event of a zonal failure. Default: `True`.
 - **`monitoring`** *(object)*
   - **`mode`** *(string)*: Enable and customize CloudWatch metric alarms. Default: `AUTOMATED`.
@@ -74,6 +74,22 @@ Form input parameters for configuring a bundle for deployment.
 - **`network`** *(object)*
   - **`automatic`** *(boolean)*: Automatically select CIDR range that doesn't conflict with other VPCs in the region. Default: `True`.
 ## Examples
+
+  ```json
+  {
+      "__name": "Wizard",
+      "aws_region": "us-west-2",
+      "enable_flow_logs": false,
+      "high_availability": false,
+      "monitoring": {
+          "mode": "AUTOMATED"
+      },
+      "network": {
+          "automatic": true,
+          "mask": 20
+      }
+  }
+  ```
 
   ```json
   {
