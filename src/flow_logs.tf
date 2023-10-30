@@ -86,7 +86,7 @@ resource "aws_kms_alias" "flow_log_encryption_key" {
 resource "aws_cloudwatch_log_group" "flow_log" {
   for_each          = local.cloudwatch_flow_log_for_each
   name              = local.cloudwatch_flow_log_name
-  retention_in_days = 30
+  retention_in_days = 365
   kms_key_id        = aws_kms_key.flow_log_encryption_key[each.key].arn
 }
 

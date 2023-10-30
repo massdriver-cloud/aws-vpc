@@ -11,7 +11,7 @@ steps:
 
 params:
   examples:
-    - __name: Wizard 
+    - __name: Wizard
       aws_region: us-west-2
       network:
         automatic: true
@@ -98,7 +98,7 @@ params:
       type: boolean
       title: Enable VPC Flow Logs
       description: Enable sending VPC traffic logs to Cloudwatch logs for auditing.
-      default: true
+      default: false
     monitoring:
       type: object
       title: Monitoring
