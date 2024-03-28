@@ -1,25 +1,19 @@
 locals {
   public_subnets = [
     for subnet in aws_subnet.public : {
-      arn      = subnet.arn
-      cidr     = subnet.cidr_block
-      aws_zone = subnet.availability_zone
+      arn = subnet.arn
     }
   ]
 
   private_subnets = [
     for subnet in aws_subnet.private : {
-      arn      = subnet.arn
-      cidr     = subnet.cidr_block
-      aws_zone = subnet.availability_zone
+      arn = subnet.arn
     }
   ]
 
   internal_subnets = [
     for subnet in aws_subnet.internal : {
-      arn      = subnet.arn
-      cidr     = subnet.cidr_block
-      aws_zone = subnet.availability_zone
+      arn = subnet.arn
     }
   ]
 }
