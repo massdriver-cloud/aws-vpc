@@ -1,0 +1,19 @@
+name: Publish to Massdriver
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      MASSDRIVER_ORG_ID: ${{ secrets.MASSDRIVER_ORG_ID }}
+      MASSDRIVER_API_KEY: ${{ secrets.MASSDRIVER_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Massdriver CLI
+        uses: massdriver-cloud/actions@v4
+      - name: Publish Bundle 
+        uses: massdriver-cloud/actions/bundle_publish@v4
+        with:
+          build-directory: ./ # path to massdriver config directory, contains massdriver.yaml
