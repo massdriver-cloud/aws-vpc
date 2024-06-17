@@ -1,8 +1,8 @@
 schema: draft-07
 name: aws-vpc
 description: AWS VPC includes best-practice AWS reference architecture for VPCs and subnets.
-source_url: github.com/massdriver-cloud/aws-vpc
-access: public
+source_url: github.com/inquery-team-git/aws-vpc
+access: private
 type: infrastructure
 
 steps:
