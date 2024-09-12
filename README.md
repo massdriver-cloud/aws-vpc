@@ -17,7 +17,7 @@ AWS VPC includes best-practice AWS reference architecture for VPCs and subnets.
 
 ## Design
 
-For detailed information, check out our [Operator Guide](operator.mdx) for this bundle.
+For detailed information, check out our [Operator Guide](operator.md) for this bundle.
 
 ## Usage
 
@@ -187,20 +187,6 @@ Resources created by this bundle that can be connected to other bundles.
             "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
             ```
 
-          - **`aws_zone`** *(string)*: AWS Availability Zone.
-
-            Examples:
-          - **`cidr`** *(string)*
-
-            Examples:
-            ```json
-            "10.100.0.0/16"
-            ```
-
-            ```json
-            "192.24.12.0/22"
-            ```
-
 
           Examples:
       - **`private_subnets`** *(array)*
@@ -216,20 +202,6 @@ Resources created by this bundle that can be connected to other bundles.
             "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
             ```
 
-          - **`aws_zone`** *(string)*: AWS Availability Zone.
-
-            Examples:
-          - **`cidr`** *(string)*
-
-            Examples:
-            ```json
-            "10.100.0.0/16"
-            ```
-
-            ```json
-            "192.24.12.0/22"
-            ```
-
 
           Examples:
       - **`public_subnets`** *(array)*
@@ -243,20 +215,6 @@ Resources created by this bundle that can be connected to other bundles.
 
             ```json
             "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
-            ```
-
-          - **`aws_zone`** *(string)*: AWS Availability Zone.
-
-            Examples:
-          - **`cidr`** *(string)*
-
-            Examples:
-            ```json
-            "10.100.0.0/16"
-            ```
-
-            ```json
-            "192.24.12.0/22"
             ```
 
 
