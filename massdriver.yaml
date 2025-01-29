@@ -99,6 +99,33 @@ params:
       title: Enable VPC Flow Logs
       description: Enable sending VPC traffic logs to Cloudwatch logs for auditing.
       default: false
+    dns:
+      type: object
+      title: DNS Configuration
+      required:
+        - enable_dns
+      properties:
+        enable_dns:
+          title: Associate Private DNS Zone
+          type: boolean
+          description: Enabling this option will associate a private DNS zone with the VPC
+          default: false
+      dependencies:
+        enable_dns:
+          oneOf:
+            - properties:
+                enable_dns:
+                  const: false
+            - properties:
+                enable_dns:
+                  const: true
+                hosted_zone_id:
+                  title: Private DNS Zone
+                  type: string
+                  description: The Route 53 private DNS zone to use for the VPC
+                  default: ""
+              required:
+                - hosted_zone_id
     monitoring:
       type: object
       title: Monitoring
@@ -177,8 +204,16 @@ ui:
     - network
     - high_availability
     - enable_flow_logs
+    - dns
     - monitoring
     - "*"
   aws_region:
     ui:field: supportedCloudLocationsDropdown
     cloudService: aws
+  dns:
+    ui:order:
+      - enable_dns
+      - hosted_zone_id
+    hosted_zone_id:
+      ui:field: dnsZonesDropdown
+      cloud: aws

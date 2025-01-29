@@ -71,3 +71,11 @@ variable "network" {
     cidr      = optional(string)
   })
 }
+// Auto-generated variable declarations from massdriver.yaml
+variable "dns" {
+  type = object({
+    enable_dns     = bool
+    hosted_zone_id = optional(string)
+  })
+  default = null
+}

@@ -46,6 +46,8 @@ Form input parameters for configuring a bundle for deployment.
   "us-west-2"
   ```
 
+- **`dns`** *(object)*
+  - **`enable_dns`** *(boolean)*: Enabling this option will associate a private DNS zone with the VPC. Default: `False`.
 - **`enable_flow_logs`** *(boolean)*: Enable sending VPC traffic logs to Cloudwatch logs for auditing. Default: `False`.
 - **`high_availability`** *(boolean)*: Provision NAT Gateways in all availability zones so private subnets stay up in the event of a zonal failure. Default: `True`.
 - **`monitoring`** *(object)*

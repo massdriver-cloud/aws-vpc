@@ -1,8 +1,6 @@
 resource "aws_eip" "nat" {
   for_each = local.nat_cidr_blocks
 
-  vpc = true
-
   tags = {
     Name = "${var.md_metadata.name_prefix}-${each.key}-nat-gateway"
   }
