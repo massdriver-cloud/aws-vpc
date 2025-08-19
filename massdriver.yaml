@@ -3,7 +3,6 @@ name: aws-vpc
 version: 1.0.0
 description: AWS VPC includes best-practice AWS reference architecture for VPCs and subnets.
 source_url: https://github.com/massdriver-cloud/aws-vpc
-type: application
 steps:
 - path: src
   provisioner: opentofu
