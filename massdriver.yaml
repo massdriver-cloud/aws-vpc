@@ -158,13 +158,13 @@ connections:
   - aws_authentication
   properties:
     aws_authentication:
-      "$ref": massdriver/aws-iam-role
+      "$ref": aws-iam-role
 artifacts:
   required:
   - vpc
   properties:
     vpc:
-      "$ref": massdriver/aws-vpc
+      "$ref": aws-vpc
 ui:
   ui:order:
   - aws_region
