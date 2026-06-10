@@ -23,8 +23,8 @@ terraform {
 provider "aws" {
   region = var.aws_region
   assume_role {
-    role_arn    = var.aws_authentication.data.arn
-    external_id = var.aws_authentication.data.external_id
+    role_arn    = var.aws_authentication.arn
+    external_id = var.aws_authentication.external_id
   }
   default_tags {
     tags = var.md_metadata.default_tags

@@ -3,10 +3,8 @@
 // To opt a variable out of regeneration, move it to another file (e.g. variables.tf).
 variable "aws_authentication" {
   type = object({
-    data = object({
-      arn         = string
-      external_id = optional(string)
-    })
+    arn         = string
+    external_id = string
   })
 }
 variable "aws_region" {
