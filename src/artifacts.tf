@@ -23,14 +23,12 @@ resource "massdriver_artifact" "vpc" {
   name     = "AWS VPC ${var.md_metadata.name_prefix} (${aws_vpc.main.id})"
   artifact = jsonencode(
     {
-      data = {
-        infrastructure = {
-          arn              = aws_vpc.main.arn
-          cidr             = aws_vpc.main.cidr_block
-          private_subnets  = local.private_subnets
-          public_subnets   = local.public_subnets
-          internal_subnets = local.internal_subnets
-        }
+      infrastructure = {
+        arn              = aws_vpc.main.arn
+        cidr             = aws_vpc.main.cidr_block
+        private_subnets  = local.private_subnets
+        public_subnets   = local.public_subnets
+        internal_subnets = local.internal_subnets
       }
       specs = {
         aws = {
