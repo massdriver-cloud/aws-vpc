@@ -18,10 +18,10 @@ locals {
   ]
 }
 
-resource "massdriver_artifact" "vpc" {
-  field    = "vpc"
-  name     = "AWS VPC ${var.md_metadata.name_prefix} (${aws_vpc.main.id})"
-  artifact = jsonencode(
+resource "massdriver_resource" "vpc" {
+  field = "vpc"
+  name  = "AWS VPC ${var.md_metadata.name_prefix} (${aws_vpc.main.id})"
+  resource = jsonencode(
     {
       infrastructure = {
         arn              = aws_vpc.main.arn

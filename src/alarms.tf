@@ -23,13 +23,15 @@ locals {
 }
 
 module "alarm_channel" {
-  source      = "github.com/massdriver-cloud/terraform-modules//aws/alarm-channel?ref=343d3e4"
+  source      = "massdriver-cloud/aws-alarm-channel/massdriver"
+  version     = "~> 0.1"
   md_metadata = var.md_metadata
 }
 
 module "ip_address_utilization" {
   count         = lookup(local.alarms, "ip_address_utilization", null) == null ? 0 : 1
-  source        = "github.com/massdriver-cloud/terraform-modules//aws/cloudwatch-alarm?ref=343d3e4"
+  source        = "massdriver-cloud/aws-metric-alarm/massdriver"
+  version       = "~> 1.0"
   sns_topic_arn = module.alarm_channel.arn
   display_name  = "IP Address Availability"
   depends_on = [
@@ -53,7 +55,8 @@ module "ip_address_utilization" {
 }
 
 module "nat_gateway_port_allocation" {
-  source        = "github.com/massdriver-cloud/terraform-modules//aws/cloudwatch-alarm?ref=343d3e4"
+  source        = "massdriver-cloud/aws-metric-alarm/massdriver"
+  version       = "~> 1.0"
   for_each      = lookup(local.alarms, "nat_gateway_port_allocation", null) == null ? {} : local.nat_cidr_blocks
   sns_topic_arn = module.alarm_channel.arn
   display_name  = "NAT Gateway Port Allocation"

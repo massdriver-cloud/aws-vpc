@@ -1,6 +1,6 @@
 schema: draft-07
 name: aws-vpc
-version: 1.0.0
+version: 1.0.3
 description: AWS VPC includes best-practice AWS reference architecture for VPCs and subnets.
 source_url: https://github.com/massdriver-cloud/aws-vpc
 steps:
@@ -34,7 +34,11 @@ params:
   - network
   properties:
     aws_region:
-      "$ref": https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-region.json
+      type: string
+      title: Region
+      description: AWS Region to provision in.
+      examples:
+        - us-west-2
       "$md.immutable": true
     network:
       title: Network Configuration
@@ -153,18 +157,17 @@ params:
                         description: The threshold of port allocation errors above which the alarm will trigger
                         default: 1
                         minimum: 1
-connections:
-  required:
-  - aws_authentication
-  properties:
-    aws_authentication:
-      "$ref": aws-iam-role
-artifacts:
-  required:
-  - vpc
-  properties:
-    vpc:
-      "$ref": aws-vpc
+
+dependencies:
+  aws_authentication:
+    resource_type: aws-iam-role
+    required: true
+
+resources:
+  vpc:
+    resource_type: aws-vpc-resource
+    required: true
+
 ui:
   ui:order:
   - aws_region
